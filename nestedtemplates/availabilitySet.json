@@ -1,6 +1,6 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "9.0-9",
+    "contentVersion": "10.0-3",
     "parameters": {
         "availabilitySetSetting": {
             "type": "object"
@@ -12,7 +12,6 @@
             "type": "Microsoft.Compute/availabilitySets",
             "location": "[parameters('availabilitySetSetting').location]",
             "apiVersion": "2019-03-01",
-            "dependsOn": [],
             "tags": {
                 "displayName": "[parameters('availabilitySetSetting').name]"
             },
