@@ -1,6 +1,6 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "10.0-3",
+    "contentVersion": "10.0-4",
     "parameters": {
         "DeploymentName": {
             "type": "string",
@@ -139,7 +139,7 @@
                 "description": "The base URL for dependent assets"
             },
             "minLength": 1,
-            "defaultValue": "https://raw.githubusercontent.com/marklogic/cloud-enablement-azure/v10.0-3"
+            "defaultValue": "https://raw.githubusercontent.com/marklogic/cloud-enablement-azure/v10.0-4"
         },
         "_artifactsLocationSasToken": {
             "type": "securestring",
@@ -157,7 +157,7 @@
         }
     },
     "variables": {
-        "templateVersion": "10.0-3",
+        "templateVersion": "10.0-4",
         "baseUrl": "[replace(parameters('_artifactsLocation'),'/mainTemplate.json','')]",
         "templateBaseUrl": "[concat(variables('baseUrl'),'/nestedtemplates/')]",
         "scriptBaseUrl": "[concat(variables('baseUrl'),'/scripts/')]",
@@ -167,7 +167,7 @@
         "enableHA": "[if(lessOrEquals(parameters('NumberOfNodes'),1),bool('false'),equals(parameters('HighAvailability'),'enable'))]",
         "license": "[if(and(equals(parameters('Licensee'),'none'),equals(parameters('LicenseKey'),'none')),'DEV','BYOL')]",
         "imageOffer": "[if(equals(variables('license'),'DEV'),'marklogic-developer-10','marklogic-10-byol')]",
-        "imageSku": "[if(equals(variables('license'),'DEV'),'ml1003_centos8','ml1003_centos8_byol')]",
+        "imageSku": "[if(equals(variables('license'),'DEV'),'ml1004_centos8','ml1004_centos8_byol')]",
         "templateUrls": {
             "availabilitySetTemplateUrl": "[concat(variables('templateBaseUrl'),'availabilitySet.json',parameters('_artifactsLocationSasToken'))]",
             "vnetTemplateUrl": "[concat(variables('templateBaseUrl'),'virtualNetwork.json',parameters('_artifactsLocationSasToken'))]",
@@ -304,7 +304,7 @@
     },
     "resources": [
         {
-            "apiVersion": "2018-05-01",
+            "apiVersion": "2019-10-01",
             "name": "pid-87c9b4df-5580-5c64-a7b4-07bcee297a36",
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -320,7 +320,7 @@
             "name": "availabilitySetDeployment",
             "condition": "[variables('enableAvailabilitySet')]",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2018-05-01",
+            "apiVersion": "2019-10-01",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -337,7 +337,7 @@
         {
             "name": "vnetDeployment",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2018-05-01",
+            "apiVersion": "2019-10-01",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -354,7 +354,7 @@
         {
             "name": "nodePublicIpDeployment",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2018-05-01",
+            "apiVersion": "2019-10-01",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -371,7 +371,7 @@
         {
             "name": "nsgDeployment",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2018-05-01",
+            "apiVersion": "2019-10-01",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -388,7 +388,7 @@
         {
             "name": "appGatewayDeployment",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2018-05-01",
+            "apiVersion": "2019-10-01",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -408,7 +408,7 @@
         {
             "name": "networkInterfaceDeployment",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2018-05-01",
+            "apiVersion": "2019-10-01",
             "dependsOn": [
                 "vnetDeployment",
                 "nodePublicIpDeployment",
@@ -431,7 +431,7 @@
         {
             "name": "virtualMachineDeployment",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2018-05-01",
+            "apiVersion": "2019-10-01",
             "dependsOn": [
                 "networkInterfaceDeployment",
                 "availabilitySetDeployment"
@@ -452,7 +452,7 @@
         {
             "name": "bootstrapNodeExtDeployment",
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2018-05-01",
+            "apiVersion": "2019-10-01",
             "dependsOn": [
                 "virtualMachineDeployment"
             ],
@@ -473,7 +473,7 @@
             "name": "additionalNodeExtDeployment",
             "type": "Microsoft.Resources/deployments",
             "condition": "[greater(parameters('NumberOfNodes'),1)]",
-            "apiVersion": "2018-05-01",
+            "apiVersion": "2019-10-01",
             "dependsOn": [
                 "bootstrapNodeExtDeployment"
             ],
